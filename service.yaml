@@ -1,0 +1,43 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  vm:
+    derived_from: tosca.nodes.Compute
+    interfaces:
+      Standard:
+        inputs:
+          os:              { value: { get_input: os              }, type: string }
+          vm_image_size:   { value: { get_input: vm_image_size   }, type: string }
+          vm_ram_mb:       { value: { get_input: vm_ram_mb       }, type: string }
+          vm_vcpus:        { value: { get_input: vm_vcpus        }, type: string }        
+        operations:
+          create: playbooks/vm/create.yaml
+          delete: playbooks/vm/delete.yaml
+
+topology_template:
+  inputs:
+    os:
+      type: string
+      default: "ubuntu22"
+    vm_image_size:
+      type: string
+      default: "50G"
+    vm_ram_mb:
+      type: string
+      default: "4096"
+    vm_vcpus:
+      type: string
+      default: "2"
+
+  node_templates:
+    my-vm:
+      type: vm
+      attributes:
+        private_address: localhost
+        public_address: localhost
+      
+
+#    hello:
+#      type: hello_type
+#      requirements:
+#        - host: my-workstation

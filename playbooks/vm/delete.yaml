@@ -1,0 +1,8 @@
+- hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Shutdown vm
+      file:
+        path: /tmp/playing-opera
+        state: absent

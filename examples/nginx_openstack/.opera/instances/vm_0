@@ -1,0 +1,58 @@
+{
+  "tosca_name": {
+    "is_set": true,
+    "data": "vm"
+  },
+  "tosca_id": {
+    "is_set": true,
+    "data": "vm_0"
+  },
+  "state": {
+    "is_set": true,
+    "data": "error"
+  },
+  "name": {
+    "is_set": true,
+    "data": "nginx_host"
+  },
+  "image": {
+    "is_set": true,
+    "data": "9ea4856a-32b2-4553-b408-cfa4cb1bb40b"
+  },
+  "flavor": {
+    "is_set": true,
+    "data": "d3046a41-245a-4042-862e-59568e81f8fa"
+  },
+  "network": {
+    "is_set": true,
+    "data": "753940e0-c2a7-4c9d-992e-4d5bd71f85aa"
+  },
+  "security_groups": {
+    "is_set": true,
+    "data": "default"
+  },
+  "key_name": {
+    "is_set": true,
+    "data": "tadej_borovsak"
+  },
+  "private_address": {
+    "is_set": false,
+    "data": null
+  },
+  "public_address": {
+    "is_set": false,
+    "data": null
+  },
+  "networks": {
+    "is_set": false,
+    "data": null
+  },
+  "ports": {
+    "is_set": false,
+    "data": null
+  },
+  "id": {
+    "is_set": false,
+    "data": null
+  }
+}

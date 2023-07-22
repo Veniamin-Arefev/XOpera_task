@@ -1,0 +1,22 @@
+{
+  "tosca_name": {
+    "is_set": true,
+    "data": "my_node"
+  },
+  "tosca_id": {
+    "is_set": true,
+    "data": "my_node_0"
+  },
+  "state": {
+    "is_set": true,
+    "data": "started"
+  },
+  "my_property": {
+    "is_set": true,
+    "data": 123
+  },
+  "my_attribute": {
+    "is_set": true,
+    "data": "my_custom_attribute_value"
+  }
+}
