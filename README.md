@@ -27,6 +27,10 @@ strictly pyyaml=5.3.1
   d. запустит xOpera на удаление
 
 Перед работой:
+
 virsh net-edit default
+
 и после <range... добавить
+```
 <host mac='52:54:00:f3:83:87' ip='192.168.122.55'/>
+```
