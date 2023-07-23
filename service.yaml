@@ -3,38 +3,55 @@ tosca_definitions_version: tosca_simple_yaml_1_3
 node_types:
   vm:
     derived_from: tosca.nodes.Compute
+    properties:
+      os:
+        type: string
+      vm_image_size:
+        type: string
+      vm_ram_mb:
+        type: string
+      vm_vcpus:
+        type: string    
     interfaces:
       Standard:
-        inputs:
-          os:              { value: { get_input: os              }, type: string }
-          vm_image_size:   { value: { get_input: vm_image_size   }, type: string }
-          vm_ram_mb:       { value: { get_input: vm_ram_mb       }, type: string }
-          vm_vcpus:        { value: { get_input: vm_vcpus        }, type: string }        
         operations:
-          create: playbooks/vm/create.yaml
+          create: 
+            inputs:
+              os:              { value: { get_property: [ SELF, os             ] }, type: string }
+              vm_image_size:   { value: { get_property: [ SELF, vm_image_size  ] }, type: string }
+              vm_ram_mb:       { value: { get_property: [ SELF, vm_ram_mb      ] }, type: string }
+              vm_vcpus:        { value: { get_property: [ SELF, vm_vcpus       ] }, type: string }
+              
+            implementation: playbooks/vm/create.yaml
           delete: playbooks/vm/delete.yaml
 
 topology_template:
   inputs:
     os:
       type: string
-      default: "ubuntu22"
+      default: ubuntu22
     vm_image_size:
       type: string
-      default: "50G"
+      default: 50G
     vm_ram_mb:
       type: string
-      default: "4096"
+      default: 4096
     vm_vcpus:
       type: string
-      default: "2"
+      default: 2
 
   node_templates:
     my-vm:
       type: vm
-      attributes:
-        private_address: localhost
-        public_address: localhost
+      properties:
+        os:              { value: { get_input: os              }, type: string }
+        vm_image_size:   { value: { get_input: vm_image_size   }, type: string }
+        vm_ram_mb:       { value: { get_input: vm_ram_mb       }, type: string }
+        vm_vcpus:        { value: { get_input: vm_vcpus        }, type: string }
+
+#      attributes:
+#        private_address: localhost
+#        public_address: localhost
       
 
 #    hello:

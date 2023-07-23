@@ -12,4 +12,4 @@
     - name: Ansible was here
       copy:
         dest: /tmp/playing-opera/hello/hello.txt
-        content: "{{ marker }}"
+        content: "{{ marker }} {{ os }}"

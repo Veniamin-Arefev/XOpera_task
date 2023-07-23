@@ -7,6 +7,7 @@ node_types:
       Standard:
         inputs:
           marker: {value: { get_input: marker }, type: string }
+          os: { value: {get_input: os }, type: string }
         operations:
           create: playbooks/create.yaml
           delete: playbooks/delete.yaml
@@ -16,6 +17,7 @@ topology_template:
     marker:
       type: string
       default: default-marker
+    os: { type: string, default: ubuntu} 
 
   node_templates:
     my-workstation:

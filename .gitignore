@@ -1,7 +1,7 @@
 #submodule opera
 xopera-opera
-
-
+*.img
+.opera
 
 
 # Byte-compiled / optimized / DLL files

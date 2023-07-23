@@ -1,8 +1,22 @@
 - hosts: localhost
   gather_facts: false
-
+  become: true
+  vars:
+    pool_dir: "/var/lib/libvirt/images"
+    vm_name: "my_vm"
+    vm_ssh_key: ""
+    base_image_url: "images/jammy-server-cloudimg-amd64.img"
+    
   tasks:
     - name: Shutdown vm
-      file:
-        path: /tmp/playing-opera
-        state: absent
+      shell: virsh destroy {{ vm_name }}
+
+    - name: Delete vm information
+      shell: virsh undefine {{ vm_name }}
+      
+    - name: Delete images and files
+      shell: |
+        virsh vol-delete --pool default {{ vm_name }}-user-data.yaml
+        virsh vol-delete --pool default {{ vm_name }}.img
+        virsh vol-delete --pool default {{ vm_name }}_clcnf.img
+
