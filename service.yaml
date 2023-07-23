@@ -44,10 +44,10 @@ topology_template:
     my-vm:
       type: vm
       properties:
-        os:              { value: { get_input: os              }, type: string }
-        vm_image_size:   { value: { get_input: vm_image_size   }, type: string }
-        vm_ram_mb:       { value: { get_input: vm_ram_mb       }, type: string }
-        vm_vcpus:        { value: { get_input: vm_vcpus        }, type: string }
+        os:              { get_input: os              }
+        vm_image_size:   { get_input: vm_image_size   }
+        vm_ram_mb:       { get_input: vm_ram_mb       }
+        vm_vcpus:        { get_input: vm_vcpus        }
 
 #      attributes:
 #        private_address: localhost
