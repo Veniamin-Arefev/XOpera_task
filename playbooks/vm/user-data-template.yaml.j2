@@ -2,7 +2,7 @@
 hostname: "{{ vm_name }}"
 users:
   - default
-  - name: "root"
+  - name: "{{ vm_user }}"
     sudo: "ALL=(ALL) NOPASSWD:ALL"
     shell: "/bin/bash"
     ssh-authorized-keys:

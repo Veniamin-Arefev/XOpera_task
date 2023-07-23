@@ -1,2 +1,2 @@
 rm -rf .opera
-opera deploy --verbose service.yaml
+opera deploy service.yaml -v -c

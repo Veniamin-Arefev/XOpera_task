@@ -11,19 +11,77 @@ node_types:
       vm_ram_mb:
         type: string
       vm_vcpus:
-        type: string    
+        type: string
+      vm_user: 
+        type: string
+      vm_ssh_key: 
+        type: string
     interfaces:
       Standard:
         operations:
-          create: 
+          create:
             inputs:
               os:              { value: { get_property: [ SELF, os             ] }, type: string }
               vm_image_size:   { value: { get_property: [ SELF, vm_image_size  ] }, type: string }
               vm_ram_mb:       { value: { get_property: [ SELF, vm_ram_mb      ] }, type: string }
               vm_vcpus:        { value: { get_property: [ SELF, vm_vcpus       ] }, type: string }
-              
+              vm_user:         { value: { get_property: [ SELF, vm_user        ] }, type: string }
+              vm_ssh_key:      { value: { get_property: [ SELF, vm_ssh_key     ] }, type: string }
             implementation: playbooks/vm/create.yaml
           delete: playbooks/vm/delete.yaml
+    artifacts:
+      image22:
+        type: tosca.artifacts.File
+        file: playbooks/vm/images/jammy-server-cloudimg-amd64.img
+      user_template:
+        type: tosca.artifacts.File
+        file: playbooks/vm/user-data-template.yaml.j2
+
+  docker:
+    derived_from: tosca.nodes.SoftwareComponent
+    properties:
+      docker_version:
+        type: string
+      ssh_user: 
+        type: string
+      ssh_key_file: 
+        type: string
+    capabilities:
+      host:
+        type: tosca.capabilities.Compute
+#        valid_source_types: [nginx]
+    interfaces:
+      Standard:
+        operations:
+          create:
+            inputs:
+              docker_version:  { value: { get_property: [ SELF, docker_version ] }, type: string }
+              ssh_user:        { value: { get_property: [ SELF, ssh_user       ] }, type: string }
+              ssh_key_file:    { value: { get_property: [ SELF, ssh_key_file   ] }, type: string }
+            implementation: playbooks/docker/create.yaml
+          delete: playbooks/docker/delete.yaml
+
+#  nginx:
+#    derived_from: tosca.nodes.SoftwareComponent
+#    properties:
+#      nginx_version:
+#        type: string
+#      site_text:
+#        type: string
+#    requirements:
+#      - host:
+#          capability: tosca.capabilities.Compute
+#        valid_source_types: [nginx.Site]
+#    interfaces:
+#      Standard:
+#        operations:
+#          create:
+#            inputs:
+#              docker_version:  { value: { get_property: [ SELF, docker_version ] }, type: string }
+#            implementation: playbooks/nginx/create.yaml
+#          delete: playbooks/nginx/delete.yaml
+
+
 
 topology_template:
   inputs:
@@ -39,22 +97,52 @@ topology_template:
     vm_vcpus:
       type: string
       default: 2
+    docker_version:
+      type: string
+      default: 1.29.2-1
+    nginx_version:
+      type: string
+      default: latest
+    site_text:
+      type: string
+      default: Hello here!
+    vm_user: 
+      type: string
+      default: root
+    vm_ssh_public_key: 
+      type: string
+      default: ""
+    vm_ssh_private_key: 
+      type: string
+      default: ""
+
+    
 
   node_templates:
     my-vm:
       type: vm
       properties:
-        os:              { get_input: os              }
-        vm_image_size:   { get_input: vm_image_size   }
-        vm_ram_mb:       { get_input: vm_ram_mb       }
-        vm_vcpus:        { get_input: vm_vcpus        }
+        os:              { get_input: os                }
+        vm_image_size:   { get_input: vm_image_size     }
+        vm_ram_mb:       { get_input: vm_ram_mb         }
+        vm_vcpus:        { get_input: vm_vcpus          }        
+        vm_user:         { get_input: vm_user           }
+        vm_ssh_key:      { get_input: vm_ssh_public_key }
+      attributes:
+        public_address: 192.168.0.55
+        private_address: 192.168.0.55
 
-#      attributes:
-#        private_address: localhost
-#        public_address: localhost
-      
+    my-docker:
+      type: docker
+      properties:
+        docker_version:  { get_input: docker_version     }
+        ssh_user:        { get_input: vm_user            }
+        ssh_key_file:    { get_input: vm_ssh_private_key }
+      requirements:
+        - host: my-vm
 
-#    hello:
-#      type: hello_type
-#      requirements:
-#        - host: my-workstation
+
+
+
+
+

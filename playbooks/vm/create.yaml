@@ -1,11 +1,11 @@
 - hosts: localhost
   gather_facts: false
   become: true
+  connection: local
   vars:
-    pool_dir: "/var/lib/libvirt/images"
-    vm_name: "my_vm"
-    vm_ssh_key: ""
-    base_image_url: "images/jammy-server-cloudimg-amd64.img"
+    pool_dir: /var/lib/libvirt/images
+    vm_name: my_vm
+    base_image_url: "jammy-server-cloudimg-amd64.img"
   tasks:
     - name: Create VM image from base
       copy:
@@ -52,4 +52,25 @@
         --os-variant ubuntu20.04 \
         --virt-type kvm \
         --graphics none \
-        --noautoconsole
+        --noautoconsole \
+        --network network=default,mac=52:54:00:f3:83:87
+
+    - name: Create temporary inventory for ssh wait
+      add_host:
+        name: server
+        groups: vms
+        ansible_host: "192.168.122.55"
+        ansible_user: root
+        ansible_ssh_common_args: >
+          -o IdentitiesOnly=yes
+          -o BatchMode=yes
+          -o UserKnownHostsFile=/dev/null
+          -o StrictHostKeyChecking=no
+
+- hosts: vms
+  gather_facts: no
+  tasks:
+    - name: Wait for ssh to wake up
+      wait_for_connection:
+
+
