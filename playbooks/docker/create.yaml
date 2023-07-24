@@ -27,6 +27,6 @@
 
     - name: Start nginx
       shell: |
-        docker run -d -p 80:80 static-nginx
+        docker run --restart=always -d -p 80:80 static-nginx
 
 

@@ -96,15 +96,23 @@ topology_template:
     os:
       type: string
       default: ubuntu22
+      constraints:
+        - valid_values: [ubuntu22, ubuntu20, ubuntu18]
     vm_image_size:
-      type: string
-      default: 50G
+      type: scalar-unit.size
+      default: 20G
+      constraints:
+        - greater_or_equal: 5G
     vm_ram_mb:
-      type: string
+      type: integer
       default: 4096
+      constraints:
+        - greater_or_equal: 2048
     vm_vcpus:
-      type: string
+      type: integer
       default: 2
+      constraints:
+        - greater_or_equal: 2
     docker_version:
       type: string
       default: 24
