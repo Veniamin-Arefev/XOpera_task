@@ -5,26 +5,32 @@
   vars:
     pool_dir: /var/lib/libvirt/images
     vm_name: my_vm
-    base_image_url: "jammy-server-cloudimg-amd64.img"
   tasks:
+    - name: Ubuntu 22 image name
+      set_fact:
+        base_image_name: "jammy-server-cloudimg-amd64.img"
+      when: os == "ubuntu22"
+      
+    - name: Ubuntu 20 image name
+      set_fact:
+        base_image_name: "focal-server-cloudimg-amd64.img"
+      when: os == "ubuntu20"
+
+    - name: Ubuntu 18 image name
+      set_fact:
+        base_image_name: "bionic-server-cloudimg-amd64.img"
+      when: os == "ubuntu18"
+      
+    - name: Fail if os is not supported
+      debug:
+        msg: null message
+      failed_when: base_image_name is undefined
+#      when: base_image_name is is undefined
+      
     - name: Create VM image from base
       copy:
-        src: "{{ base_image_url }}"
+        src: "{{ base_image_name }}"
         dest: "{{ pool_dir }}/{{ vm_name }}.img"
-#      when: os == "ubuntu22"
-      register: copy_results
-#    - name: Create VM image from base
-#      copy:
-#        dest: "focal-server-cloudimg-amd64.img"
-#        src: "{{ pool_dir }}/{{ base_image_name }}"
-#      when: os == "ubuntu20"
-#      register: copy_results
-#    - name: Create VM image from base
-#      copy:
-#        dest: "images/bionic-server-cloudimg-amd64.img"
-#        src: "{{ pool_dir }}/{{ base_image_name }}"
-#      when: os == "ubuntu18"
-#      register: copy_results
 
     - name: Create user data from template
       template:

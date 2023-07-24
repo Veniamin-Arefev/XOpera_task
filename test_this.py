@@ -16,18 +16,18 @@ def get_joke() -> str:
   joke_result = translator.translate(joke, dest='ru')
   return [joke, joke_result.text]
 
-def start_opera():    
+def start_opera():
   command_deploy = ["opera deploy service.yaml -i ins.json -v"]
-  
+
   p = subprocess.run(command_deploy, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-  with open('deploy.logs', 'w') as file:
+  with open('logs_deploy', 'wb') as file:
     file.write(p.stdout)
 
-def stop_opera():    
+def stop_opera():
   command_undeploy = ["opera undeploy"]
 
   p = subprocess.run(command_undeploy, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-  with open('undeploy.logs', 'w') as file:
+  with open('logs_undeploy', 'wb') as file:
     file.write(p.stdout)
 
 joke_texts = get_joke()

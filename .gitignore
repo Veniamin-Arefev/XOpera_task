@@ -2,6 +2,7 @@
 xopera-opera
 *.img
 .opera
+ins.json
 
 
 # Byte-compiled / optimized / DLL files

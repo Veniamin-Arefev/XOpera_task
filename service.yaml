@@ -33,6 +33,12 @@ node_types:
       image22:
         type: tosca.artifacts.File
         file: artifacts/images/jammy-server-cloudimg-amd64.img
+      image20:
+        type: tosca.artifacts.File
+        file: artifacts/images/focal-server-cloudimg-amd64.img
+      image18:
+        type: tosca.artifacts.File
+        file: artifacts/images/bionic-server-cloudimg-amd64.img
       user_template:
         type: tosca.artifacts.File
         file: artifacts/user-data-template.yaml.j2
