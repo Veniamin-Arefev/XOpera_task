@@ -1,1 +1,1 @@
-opera undeploy -r
+opera undeploy -rf

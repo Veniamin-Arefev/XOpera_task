@@ -42,9 +42,9 @@ node_types:
     properties:
       docker_version:
         type: string
-      ssh_user:
+      nginx_version:
         type: string
-      ssh_key_file:
+      site_text:
         type: string
     capabilities:
       host:
@@ -56,10 +56,18 @@ node_types:
           create:
             inputs:
               docker_version:  { value: { get_property: [ SELF, docker_version ] }, type: string }
-              ssh_user:        { value: { get_property: [ SELF, ssh_user       ] }, type: string }
-              ssh_key_file:    { value: { get_property: [ SELF, ssh_key_file   ] }, type: string }
+              nginx_version:   { value: { get_property: [ SELF, nginx_version  ] }, type: string }
+              site_text:       { value: { get_property: [ SELF, site_text      ] }, type: string }
             implementation: playbooks/docker/create.yaml
           delete: playbooks/docker/delete.yaml
+    artifacts:
+      html_template:
+        type: tosca.artifacts.File
+        file: artifacts/index.html.j2
+      dockerfile_template:
+        type: tosca.artifacts.File
+        file: artifacts/Dockerfile.j2
+
 
 #  nginx:
 #    derived_from: tosca.nodes.SoftwareComponent
@@ -99,7 +107,7 @@ topology_template:
       default: 2
     docker_version:
       type: string
-      default: 1.29.2-1
+      default: 24
     nginx_version:
       type: string
       default: latest
@@ -109,12 +117,12 @@ topology_template:
     vm_user:
       type: string
       default: root
+    ip_address:
+      type: string
+      default: 192.168.122.55
     vm_ssh_public_key:
       type: string
       default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDKRCyB9s/+sndwY+KY7HRntF+x5LP4We34zX23y393LTkb2ECui9bJhTWgQuwp4JJzo07g9KOsL/T8ItEjaG5w6yaqoGHOd/fQ8HILp71c7xQ+aaY78ROGnmC7tLMx7kBaWk7YWv+hq5QOaDkDn23qHaS2tAci/Tt5KeSydEt3F6oJrwpwc0VcgBnSa6CyIH3CDa63oHvFzYINvUyL7jEROk1KWrHHwqa6UEMbo/l/pSxNncEiGqNuethdI7DvamyC6dkomS7KEAugvNNqBdQAP8iLF7pSI1Yea0oVU+aljaps1d+cG2Sjc+W59kFHpiGSiiVcwfhIzGgCBQNxDlKvuzmUPVAB118s4SNBbpTVB7ebYIw2IJ6HBLXY9ezNmQoz0gsNkOlBW669pU9U9JEgQdfGUXDe1Vx4j4TXXWQvt2iczIi33SpRa6MPE1mUD1qFAoLXplKtsAIwNiRn46aL+x84kAuSFF27DPhkE9dJDzR2qtKNs5AQ2KxTCUbBhbM= remote@G512LU
-    vm_ssh_private_key:
-      type: string
-      default: ""
 
 
 
@@ -129,15 +137,15 @@ topology_template:
         vm_user:         { get_input: vm_user           }
         vm_ssh_key:      { get_input: vm_ssh_public_key }
       attributes:
-        public_address: 192.168.0.55
-        private_address: 192.168.0.55
+        public_address:  { get_input: ip_address        }
+        private_address: { get_input: ip_address        }
 
     my-docker:
       type: docker
       properties:
         docker_version:  { get_input: docker_version     }
-        ssh_user:        { get_input: vm_user            }
-        ssh_key_file:    { get_input: vm_ssh_private_key }
+        nginx_version:   { get_input: nginx_version      }
+        site_text:       { get_input: site_text          }
       requirements:
         - host: my-vm
 
