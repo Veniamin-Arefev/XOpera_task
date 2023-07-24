@@ -1,9 +1,8 @@
 - hosts: all
   gather_facts: false
   become: true
-    
+
   tasks:
 #    - name: Shutdown vm
 #      shell: virsh destroy {{ vm_name }}
-
 

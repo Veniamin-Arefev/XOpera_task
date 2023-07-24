@@ -5,6 +5,7 @@ users:
   - name: "{{ vm_user }}"
     sudo: "ALL=(ALL) NOPASSWD:ALL"
     shell: "/bin/bash"
+    plain_text_passwd: "rootroot"
     ssh-authorized-keys:
       - "{{ vm_ssh_key }}"
 package_upgrade: true

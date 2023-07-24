@@ -12,9 +12,9 @@ node_types:
         type: string
       vm_vcpus:
         type: string
-      vm_user: 
+      vm_user:
         type: string
-      vm_ssh_key: 
+      vm_ssh_key:
         type: string
     interfaces:
       Standard:
@@ -42,9 +42,9 @@ node_types:
     properties:
       docker_version:
         type: string
-      ssh_user: 
+      ssh_user:
         type: string
-      ssh_key_file: 
+      ssh_key_file:
         type: string
     capabilities:
       host:
@@ -106,17 +106,17 @@ topology_template:
     site_text:
       type: string
       default: Hello here!
-    vm_user: 
+    vm_user:
       type: string
       default: root
-    vm_ssh_public_key: 
+    vm_ssh_public_key:
       type: string
-      default: ""
-    vm_ssh_private_key: 
+      default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDKRCyB9s/+sndwY+KY7HRntF+x5LP4We34zX23y393LTkb2ECui9bJhTWgQuwp4JJzo07g9KOsL/T8ItEjaG5w6yaqoGHOd/fQ8HILp71c7xQ+aaY78ROGnmC7tLMx7kBaWk7YWv+hq5QOaDkDn23qHaS2tAci/Tt5KeSydEt3F6oJrwpwc0VcgBnSa6CyIH3CDa63oHvFzYINvUyL7jEROk1KWrHHwqa6UEMbo/l/pSxNncEiGqNuethdI7DvamyC6dkomS7KEAugvNNqBdQAP8iLF7pSI1Yea0oVU+aljaps1d+cG2Sjc+W59kFHpiGSiiVcwfhIzGgCBQNxDlKvuzmUPVAB118s4SNBbpTVB7ebYIw2IJ6HBLXY9ezNmQoz0gsNkOlBW669pU9U9JEgQdfGUXDe1Vx4j4TXXWQvt2iczIi33SpRa6MPE1mUD1qFAoLXplKtsAIwNiRn46aL+x84kAuSFF27DPhkE9dJDzR2qtKNs5AQ2KxTCUbBhbM= remote@G512LU
+    vm_ssh_private_key:
       type: string
       default: ""
 
-    
+
 
   node_templates:
     my-vm:
@@ -125,7 +125,7 @@ topology_template:
         os:              { get_input: os                }
         vm_image_size:   { get_input: vm_image_size     }
         vm_ram_mb:       { get_input: vm_ram_mb         }
-        vm_vcpus:        { get_input: vm_vcpus          }        
+        vm_vcpus:        { get_input: vm_vcpus          }
         vm_user:         { get_input: vm_user           }
         vm_ssh_key:      { get_input: vm_ssh_public_key }
       attributes:
