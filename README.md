@@ -1,7 +1,4 @@
-#depencies
-opera
-strictly pyyaml=5.3.1
-
+# Taks main
 Необходимо реализовать развёртывание контейнера с nginx в docker на виртуальной машине с помощью TOSCA оркестратора xOpera. xOpera умеет запускать только Ansible, поэтому развёртывание нужно реализовать с помощью Ansible сценариев и привязать их к шаблону.
 
 1) Виртуальную машину нужно поднимать на localhost с помощью Libvirt, Vagrant или другого удобного инструмента. Нужно поддерживать следующие параметры:
@@ -20,17 +17,49 @@ strictly pyyaml=5.3.1
 
 Требования к выполнению задачи. Обязательно использовать git  в качестве системы контроля субверсий и не заливать всё одним коммитом; нам нужно видеть историю написания. Проще всего создать проект на гитхабе и вести проект там.
 
+# Taks additional
 Задание со звёздочкой: Получаемое решение нужно уметь автоматически тестировать. Можно написать python или bash скрипт, который
   a. сгенерирует рандомом строку
   b. запустит xOpera с этим параметром, дождется конца, возьмёт адрес, куда стучаться
   c. GET <adress> | grep <строка>
   d. запустит xOpera на удаление
 
-Перед работой:
+# Install guide
+0. Create ssh keys named `id_rsa` and add public key in `service.yaml` input default section
+1. Install os depencies
+2. Change behavior of default virsh net
+  ```bash
+   virsh net-edit default
+  ```
+  Add line after `<range...`
+  ```
+  <host mac='52:54:00:f3:83:87' ip='192.168.122.55'/>
+  ```   
+3. Install python depencies in virtual env
+  ```bash
+  . create_venv.sh
+  ```
+4. Allow sudo for current terminal
+  ```bash
+  sudo echo 1
+  ```
+5. Export variables for opera
+  ```bash
+  . export_creds.sh
+  ```
+6. Run test script
+  ```bash
+  ./test_this.py
+  ```
 
-virsh net-edit default
-
-и после <range... добавить
-```
-<host mac='52:54:00:f3:83:87' ip='192.168.122.55'/>
-```
+# Depencies
+## Os
+* libvirt
+* python3
+## Python
+* pyyaml==5.3.1
+* opera
+* ansible
+* pyjokes
+* googletrans==3.1.0a0
+* requests
