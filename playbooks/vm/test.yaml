@@ -1,9 +1,0 @@
-- hosts: localhost
-  gather_facts: false
-  become: true
-    
-  tasks:
-    - name: Shutdown vm
-      shell: echo "lalala"
-
-

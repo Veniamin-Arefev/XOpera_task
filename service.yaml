@@ -32,10 +32,10 @@ node_types:
     artifacts:
       image22:
         type: tosca.artifacts.File
-        file: playbooks/vm/images/jammy-server-cloudimg-amd64.img
+        file: artifacts/images/jammy-server-cloudimg-amd64.img
       user_template:
         type: tosca.artifacts.File
-        file: playbooks/vm/user-data-template.yaml.j2
+        file: artifacts/user-data-template.yaml.j2
 
   docker:
     derived_from: tosca.nodes.SoftwareComponent

@@ -15,7 +15,7 @@
       register: copy_results
 #    - name: Create VM image from base
 #      copy:
-#        dest: "images/focal-server-cloudimg-amd64.img"
+#        dest: "focal-server-cloudimg-amd64.img"
 #        src: "{{ pool_dir }}/{{ base_image_name }}"
 #      when: os == "ubuntu20"
 #      register: copy_results
