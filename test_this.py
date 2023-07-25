@@ -17,6 +17,7 @@ def get_joke() -> str:
   return [joke, joke_result.text]
 
 def start_opera():
+  print("Deploying...")
   command_deploy = ["opera deploy service.yaml -i ins.json -v"]
 
   p = subprocess.run(command_deploy, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -24,6 +25,7 @@ def start_opera():
     file.write(p.stdout)
 
 def stop_opera():
+  print("Undeploying...")
   command_undeploy = ["opera undeploy"]
 
   p = subprocess.run(command_undeploy, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
