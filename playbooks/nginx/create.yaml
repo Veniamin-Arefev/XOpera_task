@@ -6,21 +6,28 @@
     - name: Create static html file on target host with specific site content
       template:
         src: index.html.j2
-        dest: index.html
+        dest: "{{ node_name }}.html"
         mode: 0644
+
+    - name: Create conf for nginx on target host
+      template:
+        src: default.conf.j2
+        dest: "{{ node_name }}.conf"
+        mode: 0644
+
 
     - name: Create Dockerfile on target host with specific nginx version
       template:
         src: Dockerfile.j2
-        dest: Dockerfile
+        dest: "Dockerfile.{{ node_name }}"
         mode: 0644
 
     - name: Create docker image
       shell: |
-        docker build -t static-nginx .
+        docker build -t {{ node_name }} . -f Dockerfile.{{ node_name }}
 
     - name: Start nginx
       shell: |
-        docker run -d -p 80:80 --name static-nginx static-nginx
+        docker run --network host -d --name {{ node_name }} {{ node_name }}
 
 

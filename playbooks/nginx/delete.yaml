@@ -3,16 +3,16 @@
   become: true
   
   tasks:
-    - name: Remove files
-      shell: |
-        rm -f index.html Dockerfile
-        
-    - name: Stop container
-      shell: |
-        docker container stop static-nginx
-
-    - name: Delete docker container and image
-      shell: |
-        docker container rm static-nginx
-        docker image rm static-nginx
+#    - name: Remove files
+#      shell: |
+#        rm -f index.html Dockerfile
+#        
+#    - name: Stop container
+#      shell: |
+#        docker container stop static-nginx
+#
+#    - name: Delete docker container and image
+#      shell: |
+#        docker container rm static-nginx
+#        docker image rm static-nginx
 

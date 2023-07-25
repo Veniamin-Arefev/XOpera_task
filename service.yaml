@@ -67,13 +67,22 @@ node_types:
         type: string
       site_text:
         type: string
+      node_name:
+        type: string
+      port:
+        type: integer
+      locations:
+        type: string
     interfaces:
       Standard:
         operations:
           create:
             inputs:
-              nginx_version:   { value: { get_property: [ SELF, nginx_version  ] }, type: string }
-              site_text:       { value: { get_property: [ SELF, site_text      ] }, type: string }
+              nginx_version:        { value: { get_property: [ SELF, nginx_version  ] }, type: string }
+              site_text:            { value: { get_property: [ SELF, site_text      ] }, type: string }
+              node_name:            { value: { get_property: [ SELF, node_name      ] }, type: string }
+              port:                 { value: { get_property: [ SELF, port           ] }, type: string }
+              locations_additional: { value: { get_property: [ SELF, locations      ] }, type: string }
             implementation: playbooks/nginx/create.yaml
           delete: playbooks/nginx/delete.yaml
     artifacts:
@@ -83,6 +92,10 @@ node_types:
       dockerfile_template:
         type: tosca.artifacts.File
         file: artifacts/Dockerfile.j2
+      conf_template:
+        type: tosca.artifacts.File
+        file: artifacts/default.conf.j2
+
 
 
 
@@ -115,9 +128,54 @@ topology_template:
     nginx_version:
       type: string
       default: latest
-    site_text:
+    node_name1:
       type: string
-      default: Hello here!
+      default: static-1
+    node_name2:
+      type: string
+      default: static-2
+    node_name3:
+      type: string
+      default: proxy
+    site_text1:
+      type: string
+      default: "  <h1>Hello here 111!</h1>
+  <a href='\\'>Back</a>"
+    site_text2:
+      type: string
+      default: "  <h1>Hello here 222!</h1>
+  <a href='\\'>Back</a>"
+    site_text3:
+      type: string
+      default: "  <h1>Hello here 333!</h1>
+  <a href='\\anek1'>View anek1</a>
+  <br>
+  <a href='\\anek2'>View anek2</a>"
+    port1: 
+      type: integer
+      default: 8081
+    port2: 
+      type: integer
+      default: 8082
+    port3: 
+      type: integer
+      default: 80
+    locs1:      
+      type: string
+      default: ""
+    locs2:
+      type: string
+      default: ""
+    locs3:
+      type: string
+      default: "    location /anek1 {
+        proxy_pass http://localhost:8081/;
+    }
+
+    location /anek2 {
+        proxy_pass http://localhost:8082/;
+    }
+"
     vm_user:
       type: string
       default: root
@@ -149,17 +207,40 @@ topology_template:
       requirements:
         - host: my-vm
 
-    my-nginx:
+    my-nginx-1:
       type: nginx
       properties:
         nginx_version:   { get_input: nginx_version      }
-        site_text:       { get_input: site_text          }
+        site_text:       { get_input: site_text1         }
+        node_name:       { get_input: node_name1         }
+        port:            { get_input: port1              }
+        locations:       { get_input: locs1              }
       requirements:
         - host: my-vm
         - dependency: my-docker
 
+    my-nginx-2:
+      type: nginx
+      properties:
+        nginx_version:   { get_input: nginx_version      }
+        site_text:       { get_input: site_text2         }
+        node_name:       { get_input: node_name2         }
+        port:            { get_input: port2              }
+        locations:       { get_input: locs2              }
+      requirements:
+        - host: my-vm
+        - dependency: my-docker
 
-
-
+    my-nginx-3  :
+      type: nginx
+      properties:
+        nginx_version:   { get_input: nginx_version      }
+        site_text:       { get_input: site_text3         }
+        node_name:       { get_input: node_name3         }
+        port:            { get_input: port3              }
+        locations:       { get_input: locs3              }
+      requirements:
+        - host: my-vm
+        - dependency: my-docker
 
 
