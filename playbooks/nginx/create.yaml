@@ -1,7 +1,26 @@
 - hosts: all
   gather_facts: false
   become: true
+  
   tasks:
-    - name: Install docker with true version
-      ansible.builtin.apt:
-        name: docker-compose={{ docker_version }}
+    - name: Create static html file on target host with specific site content
+      template:
+        src: index.html.j2
+        dest: index.html
+        mode: 0644
+
+    - name: Create Dockerfile on target host with specific nginx version
+      template:
+        src: Dockerfile.j2
+        dest: Dockerfile
+        mode: 0644
+
+    - name: Create docker image
+      shell: |
+        docker build -t static-nginx .
+
+    - name: Start nginx
+      shell: |
+        docker run -d -p 80:80 --name static-nginx static-nginx
+
+

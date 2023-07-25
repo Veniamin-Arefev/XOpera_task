@@ -47,7 +47,11 @@
   ```bash
   . export_creds.sh
   ```
-6. Run test script
+6. Download images
+  ```bash
+  . check_images_and_download.sh
+  ```
+7. Run test script
   ```bash
   ./test_this.py
   ```
